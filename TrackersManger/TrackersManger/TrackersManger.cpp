@@ -58,9 +58,11 @@ bool CopyFile(std::string old_file_path, std::string new_file_path) {
 
 void MakeTrackersList(std::string curr_path, bool is_first) {
 #ifdef _WIN32
+	std::string top_tracker_360_path = curr_path + "360_tracker.exe";
 	std::string top_tracker_list_path = curr_path + "tracker_path\\tracker_list";
 	std::string top_tracker_list_path_tmp = curr_path + "tracker_path\\tracker_list_tmp";
 #else
+	std::string top_tracker_360_path = curr_path + "360_tracker";
 	std::string top_tracker_list_path = curr_path + "tracker_path/tracker_list";
 	std::string top_tracker_list_path_tmp = curr_path + "tracker_path/tracker_list_tmp";
 #endif
@@ -110,6 +112,7 @@ void MakeTrackersList(std::string curr_path, bool is_first) {
 			if (is_first) {
 #ifdef _WIN32
 				std::string tracker_360_path = curr_path + "360_trackers\\" + filename + "\\360_tracker.exe";
+				CopyFile(top_tracker_360_path.c_str(), tracker_360_path.c_str());
 				STARTUPINFO startupInfo = { 0 };
 				PROCESS_INFORMATION  processInformation = { 0 };
 				/*打开Word应用程序 C:\\Program Files (x86)\\Microsoft Office\\Office14\\WINWORD.EXE 为程序路径*/
@@ -122,6 +125,7 @@ void MakeTrackersList(std::string curr_path, bool is_first) {
 #else
 				// 启动进程
 				std::string tracker_360_path = curr_path + "360_trackers/" + filename + "/360_tracker";
+				CopyFile(top_tracker_360_path.c_str(), tracker_360_path.c_str());
 				system(tracker_360_path.c_str());
 #endif
 			}
