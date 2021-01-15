@@ -34,7 +34,7 @@
 
 
 ///////////////////////////////////////GLOBAL/////////////////////////////////
-const int G_FILE_LEVEL_NUM = 1;    // num of file level.
+const int G_FILE_LEVEL_NUM = 2;    // num of file level.
 const int G_SLEEP_TIME = 60;       // sleep seconds when check trackers over.
 //////////////////////////////////////////////////////////////////////////////
 
@@ -215,7 +215,7 @@ int main() {
 #ifdef _WIN32
 
 #else
-	std::string str_env_path = "export LD_LIBRARY_PATH = $LD_LIBRARY_PATH:";
+	std::string str_env_path = "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:";
 	str_env_path = str_env_path + curr_path;
 	system(str_env_path.c_str());
 #endif
