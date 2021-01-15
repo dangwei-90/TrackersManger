@@ -211,7 +211,8 @@ int main() {
 #ifdef _WIN32
 
 #else
-	std::string str_env_path = "export LD_LIBRARY_PATH = $LD_LIBRARY_PATH:" + curr_path.c_str();
+	std::string str_env_path = "export LD_LIBRARY_PATH = $LD_LIBRARY_PATH:";
+	str_env_path = str_env_path + curr_path;
 	system(str_env_path.c_str());
 #endif
 
