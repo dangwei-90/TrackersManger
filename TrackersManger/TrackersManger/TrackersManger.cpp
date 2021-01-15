@@ -283,7 +283,7 @@ int main() {
 #ifdef _WIN32
 			Sleep(G_SLEEP_TIME * 1000);
 #else
-		    sleep(G_SLEEP_TIME);
+			sleep(G_SLEEP_TIME);
 #endif
 			continue;
 		}
@@ -320,7 +320,7 @@ int main() {
 #ifdef _WIN32
 					_mkdir(str_360_tracker_path.c_str());
 #else
-				    mkdir(str_360_tracker_path.c_str(),  S_IRWXU | S_IRWXG | S_IRWXO);
+					mkdir(str_360_tracker_path.c_str(),  S_IRWXU | S_IRWXG | S_IRWXO);
 #endif
 
 					// 拷贝 360_tracker
@@ -353,10 +353,6 @@ int main() {
 						dll3_copy = dll3_copy + "\\libcrypto-1_1.dll";
 						CopyFile(dll3.c_str(), dll3_copy.c_str());
 					}
-#else
-					{
-				    // 设置环境变量
-				  }
 #endif
 
 #ifdef _WIN32
@@ -368,7 +364,7 @@ int main() {
 #ifdef _WIN32
 					_mkdir(str_360_tracker_torrent.c_str());
 #else
-				    mkdir(str_360_tracker_torrent.c_str(),  S_IRWXU | S_IRWXG | S_IRWXO);
+					mkdir(str_360_tracker_torrent.c_str(),  S_IRWXU | S_IRWXG | S_IRWXO);
 #endif
 
 					// 拷贝 torrent
