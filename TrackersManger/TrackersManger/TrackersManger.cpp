@@ -377,7 +377,9 @@ int main() {
 					str_360_tracker_torrent = str_360_tracker_torrent + md5 + ".torrent";
 					CopyFile(old_torrent.c_str(), str_360_tracker_torrent.c_str());
 
+#ifndef RUN_ONCE
 					CreateTrackerProcess(str_360_tracker_path);
+#endif
 				}
 				else {
 				  // 存在
@@ -415,14 +417,14 @@ int main() {
 	}
 
 #ifdef RUN_ONCE
-	// check
+	MakeTrackersList(curr_path, true);
 	while (!bquit) {
-		MakeTrackersList(curr_path, false);
 #ifdef _WIN32
-		Sleep(60 * 60 * 1000);
+		Sleep(60 * 1000);
 #else
-		sleep(60 * 60);
+		sleep(60);
 #endif
+		MakeTrackersList(curr_path, false);
 	}
 #endif
 
