@@ -123,7 +123,11 @@ void MakeTrackersList(std::string curr_path, bool is_first) {
 			printf("%s\n", filename.c_str());
 
 			// 读取各个 tracker_list
+#ifdef _WIN32
 			std::string tracker_list_path = curr_path + "360_trackers\\" + filename + "\\tracker_path\\tracker_list";
+#else
+			std::string tracker_list_path = curr_path + "360_trackers/" + filename + "/tracker_path/tracker_list";
+#endif
 			std::ifstream file_tracker_list(tracker_list_path.c_str());
 			std::istreambuf_iterator<char> beg(file_tracker_list), end;
 			std::string tracker_list_data(beg, end);
