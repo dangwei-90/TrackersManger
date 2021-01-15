@@ -72,7 +72,7 @@ void CreateTrackerProcess(std::string tracker_path) {
 	// 启动进程
 	if (fork() == 0) {
 		//child process
-		chdir(tracker_path);
+		chdir(tracker_path.c_str());
 		std::string process_path = tracker_path + "/360_tracker";
 		system(process_path.c_str());
 		exit(0);
