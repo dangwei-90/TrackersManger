@@ -208,6 +208,13 @@ int main() {
 	sprintf(curr_path, "%s/", curr_path);
 #endif
 
+#ifdef _WIN32
+
+#else
+	std::string str_env_path = "export LD_LIBRARY_PATH = $LD_LIBRARY_PATH:" + curr_path.c_str();
+	system(str_env_path.c_str());
+#endif
+
 	std::string str_all_torrent_path = curr_path;
 	str_all_torrent_path = str_all_torrent_path + all_torrent_path;
 
