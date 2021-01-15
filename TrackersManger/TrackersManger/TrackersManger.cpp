@@ -56,6 +56,25 @@ bool CopyFile(std::string old_file_path, std::string new_file_path) {
 }
 
 
+void CreateTrackerProcess(std::string tracker_path) {
+#ifdef _WIN32
+	//system(copy_360_tracker.c_str());
+	STARTUPINFO startupInfo = { 0 };
+	PROCESS_INFORMATION  processInformation = { 0 };
+	/*打开Word应用程序 C:\\Program Files (x86)\\Microsoft Office\\Office14\\WINWORD.EXE 为程序路径*/
+	BOOL bSuccess = CreateProcess(tracker_path.c_str(), NULL, NULL, NULL, FALSE, NULL, NULL, NULL, &startupInfo, &processInformation);
+
+	if (bSuccess)
+	{
+		std::cout << processInformation.dwProcessId << std::endl;
+	}
+#else
+	// 启动进程
+	system(tracker_path.c_str());
+#endif
+}
+
+
 void MakeTrackersList(std::string curr_path, bool is_first) {
 #ifdef _WIN32
 	std::string top_tracker_360_path = curr_path + "360_tracker.exe";
@@ -113,21 +132,11 @@ void MakeTrackersList(std::string curr_path, bool is_first) {
 #ifdef _WIN32
 				std::string tracker_360_path = curr_path + "360_trackers\\" + filename + "\\360_tracker.exe";
 				CopyFile(top_tracker_360_path.c_str(), tracker_360_path.c_str());
-				STARTUPINFO startupInfo = { 0 };
-				PROCESS_INFORMATION  processInformation = { 0 };
-				/*打开Word应用程序 C:\\Program Files (x86)\\Microsoft Office\\Office14\\WINWORD.EXE 为程序路径*/
-				BOOL bSuccess = CreateProcess(tracker_360_path.c_str(), NULL, NULL, NULL, FALSE, NULL, NULL, NULL, &startupInfo, &processInformation);
-
-				if (bSuccess)
-				{
-					std::cout << processInformation.dwProcessId << std::endl;
-				}
 #else
-				// 启动进程
 				std::string tracker_360_path = curr_path + "360_trackers/" + filename + "/360_tracker";
 				CopyFile(top_tracker_360_path.c_str(), tracker_360_path.c_str());
-				system(tracker_360_path.c_str());
 #endif
+				CreateTrackerProcess(tracker_360_path);
 			}
 		}
 #ifdef _WIN32
@@ -324,22 +333,7 @@ int main() {
 					// 拷贝 torrent
 					str_360_tracker_torrent = str_360_tracker_torrent + md5 + ".torrent";
 					CopyFile(old_torrent.c_str(), str_360_tracker_torrent.c_str());
-
-#ifdef _WIN32
-					//system(copy_360_tracker.c_str());
-					STARTUPINFO startupInfo = { 0 };
-					PROCESS_INFORMATION  processInformation = { 0 };
-					/*打开Word应用程序 C:\\Program Files (x86)\\Microsoft Office\\Office14\\WINWORD.EXE 为程序路径*/
-					BOOL bSuccess = CreateProcess(copy_360_tracker.c_str(), NULL, NULL, NULL, FALSE, NULL, NULL, NULL, &startupInfo, &processInformation);
-
-					if (bSuccess)
-					{
-						std::cout << processInformation.dwProcessId << std::endl;
-					}
-#else
-					// 启动进程
-					system(copy_360_tracker.c_str());
-#endif
+					CreateTrackerProcess(copy_360_tracker);
 				}
 				else {
 				  // 存在
