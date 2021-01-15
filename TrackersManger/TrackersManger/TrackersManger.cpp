@@ -70,7 +70,11 @@ void CreateTrackerProcess(std::string tracker_path) {
 	}
 #else
 	// 启动进程
-	system(tracker_path.c_str());
+	if (fork() == 0) {
+		//child process
+		system(tracker_path.c_str());
+		exit(0);
+	}	
 #endif
 }
 
@@ -333,6 +337,10 @@ int main() {
 						dll3_copy = dll3_copy + "\\libcrypto-1_1.dll";
 						CopyFile(dll3.c_str(), dll3_copy.c_str());
 					}
+#else
+					{
+				    // 设置环境变量
+				  }
 #endif
 
 #ifdef _WIN32
