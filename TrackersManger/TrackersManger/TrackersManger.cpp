@@ -61,8 +61,8 @@ void CreateTrackerProcess(std::string tracker_path) {
 	//system(copy_360_tracker.c_str());
 	STARTUPINFO startupInfo = { 0 };
 	PROCESS_INFORMATION  processInformation = { 0 };
-	/*打开Word应用程序 C:\\Program Files (x86)\\Microsoft Office\\Office14\\WINWORD.EXE 为程序路径*/
-	BOOL bSuccess = CreateProcess(tracker_path.c_str(), NULL, NULL, NULL, FALSE, NULL, NULL, NULL, &startupInfo, &processInformation);
+	std::string process_path = tracker_path + "\\360_tracker.exe";
+	BOOL bSuccess = CreateProcess(process_path.c_str(), NULL, NULL, NULL, FALSE, NULL, NULL, NULL, &startupInfo, &processInformation);
 
 	if (bSuccess)
 	{
@@ -72,7 +72,9 @@ void CreateTrackerProcess(std::string tracker_path) {
 	// 启动进程
 	if (fork() == 0) {
 		//child process
-		system(tracker_path.c_str());
+		chdir(tracker_path);
+		std::string process_path = tracker_path + "/360_tracker";
+		system(process_path.c_str());
 		exit(0);
 	}	
 #endif
@@ -134,12 +136,14 @@ void MakeTrackersList(std::string curr_path, bool is_first) {
 
 			if (is_first) {
 #ifdef _WIN32
-				std::string tracker_360_path = curr_path + "360_trackers\\" + filename + "\\360_tracker.exe";
-				CopyFile(top_tracker_360_path.c_str(), tracker_360_path.c_str());
+				std::string tracker_360_path = curr_path + "360_trackers\\" + filename;
+				std::string tracker_360_file = curr_path + "360_trackers\\" + filename + "\\360_tracker.exe";
+				CopyFile(top_tracker_360_path.c_str(), tracker_360_file.c_str());
 #else
-				std::string tracker_360_path = curr_path + "360_trackers/" + filename + "/360_tracker";
-				CopyFile(top_tracker_360_path.c_str(), tracker_360_path.c_str());
-				std::string cmd_chmod = "chmod 777 " + tracker_360_path;
+				std::string tracker_360_path = curr_path + "360_trackers/" + filename;
+				std::string tracker_360_file = curr_path + "360_trackers/" + filename + "/360_tracker";
+				CopyFile(top_tracker_360_path.c_str(), tracker_360_file.c_str());
+				std::string cmd_chmod = "chmod 777 " + tracker_360_file;
 				system(cmd_chmod.c_str());
 #endif
 				CreateTrackerProcess(tracker_360_path);
@@ -362,7 +366,8 @@ int main() {
 					// 拷贝 torrent
 					str_360_tracker_torrent = str_360_tracker_torrent + md5 + ".torrent";
 					CopyFile(old_torrent.c_str(), str_360_tracker_torrent.c_str());
-					CreateTrackerProcess(copy_360_tracker);
+
+					CreateTrackerProcess(str_360_tracker_path);
 				}
 				else {
 				  // 存在
