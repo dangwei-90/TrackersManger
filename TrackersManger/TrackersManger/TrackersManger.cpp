@@ -262,7 +262,11 @@ int main() {
 		if (!(pdir = opendir(find_path.c_str()))) {
 #endif
 			printf("torrent_path is empty: %s\n", find_path.c_str());
+#ifdef _WIN32
 			Sleep(G_SLEEP_TIME * 1000);
+#else
+		    sleep(G_SLEEP_TIME);
+#endif
 			continue;
 		}
 #ifdef _WIN32
@@ -288,10 +292,18 @@ int main() {
 				std::string str_file_level = md5.substr(0, G_FILE_LEVEL_NUM);
 				std::string str_360_tracker_path = str_360_trackers_path + str_file_level;
 
-				if (_access(str_360_tracker_path.c_str(), 0) == -1)
-				{
+
+#ifdef _WIN32
+				if (_access(str_360_tracker_path.c_str(), 0) == -1) {
+#else
+				if (access(str_360_tracker_path.c_str(), F_OK) == -1) {
+#endif
 					// 不存在
+#ifdef _WIN32
 					_mkdir(str_360_tracker_path.c_str());
+#else
+				    mkdir(str_360_tracker_path.c_str(),  S_IRWXU | S_IRWXG | S_IRWXO);
+#endif
 
 					// 拷贝 360_tracker
 #ifdef _WIN32
@@ -328,7 +340,12 @@ int main() {
 #else
 					std::string str_360_tracker_torrent = str_360_tracker_path + "/torrent_path/";
 #endif
+
+#ifdef _WIN32
 					_mkdir(str_360_tracker_torrent.c_str());
+#else
+				    mkdir(str_360_tracker_torrent.c_str(),  S_IRWXU | S_IRWXG | S_IRWXO);
+#endif
 
 					// 拷贝 torrent
 					str_360_tracker_torrent = str_360_tracker_torrent + md5 + ".torrent";
@@ -359,7 +376,11 @@ int main() {
 #endif
 
 		MakeTrackersList(curr_path, false);
+#ifdef _WIN32
 		Sleep(G_SLEEP_TIME * 1000);
+#else
+		sleep(G_SLEEP_TIME);
+#endif
 	}
 
 

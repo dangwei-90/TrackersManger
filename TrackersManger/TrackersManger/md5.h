@@ -3,6 +3,7 @@
 
 #include <string>
 #include <fstream>
+#include <cstring>
 
 /* Type define */
 typedef unsigned char byte;
