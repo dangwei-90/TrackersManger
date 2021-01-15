@@ -34,6 +34,8 @@
 
 
 ///////////////////////////////////////GLOBAL/////////////////////////////////
+#define RUN_ONCE 1
+
 const int G_FILE_LEVEL_NUM = 2;    // num of file level.
 const int G_SLEEP_TIME = 60;       // sleep seconds when check trackers over.
 //////////////////////////////////////////////////////////////////////////////
@@ -400,6 +402,10 @@ int main() {
 		closedir(pdir);
 #endif
 
+#ifdef RUN_ONCE
+		break;
+#endif
+
 		MakeTrackersList(curr_path, false);
 #ifdef _WIN32
 		Sleep(G_SLEEP_TIME * 1000);
@@ -408,6 +414,17 @@ int main() {
 #endif
 	}
 
+#ifdef RUN_ONCE
+	// check
+	while (!bquit) {
+		MakeTrackersList(curr_path, false);
+#ifdef _WIN32
+		Sleep(60 * 60 * 1000);
+#else
+		sleep(60 * 60);
+#endif
+	}
+#endif
 
 	return 0;
 }
