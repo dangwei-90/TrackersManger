@@ -139,6 +139,7 @@ void MakeTrackersList(std::string curr_path, bool is_first) {
 #else
 				std::string tracker_360_path = curr_path + "360_trackers/" + filename + "/360_tracker";
 				CopyFile(top_tracker_360_path.c_str(), tracker_360_path.c_str());
+				system("chmod 777 tracker_360_path");
 #endif
 				CreateTrackerProcess(tracker_360_path);
 			}
@@ -312,11 +313,12 @@ int main() {
 					// 拷贝 360_tracker
 #ifdef _WIN32
 					std::string copy_360_tracker = str_360_tracker_path + "\\360_tracker.exe";
+					CopyFile(last_360_tracker.c_str(), copy_360_tracker.c_str());
 #else
 					std::string copy_360_tracker = str_360_tracker_path + "/360_tracker";
-#endif
 					CopyFile(last_360_tracker.c_str(), copy_360_tracker.c_str());
-
+					system("chmod 777 tracker_360_path");
+#endif
 #ifdef _WIN32
 					{
 						std::string dll1 = curr_path;
