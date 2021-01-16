@@ -134,11 +134,13 @@ void MakeTrackersList(std::string curr_path, bool is_first) {
 			std::istreambuf_iterator<char> beg(file_tracker_list), end;
 			std::string tracker_list_data(beg, end);
 			file_tracker_list.close();
-			
-			// 写入 tmp_list
-			std::fstream sfile(top_tracker_list_path_tmp, std::ios::app | std::ios::out | std::ios_base::binary);
-			sfile.write(tracker_list_data.c_str(), tracker_list_data.size());
-			sfile.close();
+
+			if (!tracker_list_data.empty()) {
+				// 写入 tmp_list
+				std::fstream sfile(top_tracker_list_path_tmp, std::ios::app | std::ios::out | std::ios_base::binary);
+				sfile.write(tracker_list_data.c_str(), tracker_list_data.size());
+				sfile.close();
+			}
 
 			if (is_first) {
 #ifdef _WIN32
@@ -420,9 +422,9 @@ int main() {
 	MakeTrackersList(curr_path, true);
 	while (!bquit) {
 #ifdef _WIN32
-		Sleep(60 * 1000);
+		Sleep(10 * 60 * 1000);
 #else
-		sleep(60);
+		sleep(10 * 60);
 #endif
 		MakeTrackersList(curr_path, false);
 	}
